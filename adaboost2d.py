@@ -4,6 +4,7 @@ import math
 from fractions import Fraction
 
 
+EPS = 1e-10
 def readData(filePath):
   # blue = minus
   # red = plus
@@ -94,18 +95,20 @@ def pickStump(stumps, blue, red, errW):
   return coef, ans, err
 
 
-def adaBoost2d(blue, red, maxIter=500):
+def adaBoost2d(blue, red, maxIter=500, withPlots=False):
   n = len(blue[0]) + len(red[0])
   errW = [Fraction(1, n) for _ in range(n)]
   decisionStumps = getAllDecisionStumps(blue, red)
-  alfa, stumps = [], []
+  alfa, stumps, errHistory = [], [], []
   vals = [0] * n
   while maxIter > 0:
     maxIter -= 1
     coef, stump, err = pickStump(decisionStumps, blue, red, errW)
-    plotPointsWithError(blue, red, errW, stump, coef)
+    if withPlots:
+      plotPointsWithError(blue, red, errW, stump, coef)
     stumps.append(stump)
-    if err >= 0.5:
+    errHistory.append(err)
+    if abs(err - 0.5) < EPS:
       break
     alfa.append(0.5 * math.log((1 - err) / err))
     toStop = True
@@ -151,6 +154,8 @@ def adaBoost2d(blue, red, maxIter=500):
       break
   print("ALFA: ", ' '.join(map(str, alfa)))
   print("H: ", ' '.join('-' if x < 0 else '+' for x in vals))
+  plt.plot(errHistory)
+  plt.show()
 
 if __name__ == '__main__':
   if len(sys.argv) < 2:
