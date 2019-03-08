@@ -68,7 +68,7 @@ def getAllDecisionStumps(blue, red):
 
 
 def pickStump(stumps, blue, red, errW):
-  ans, err, coef = stumps[0], 1.0, 1
+  ans, err, coef = stumps[0], 0.5, 1
   for stump in stumps:
     currErr, currCoef = 0.0, 1
     if stump[0]:
@@ -162,4 +162,4 @@ if __name__ == '__main__':
     print("You should run the script with the path to the dataset: python adaboost2d.py path_to_data")
     exit(0)
   blue, red = readData(sys.argv[1])
-  adaBoost2d(blue, red)
+  adaBoost2d(blue, red, withPlots=True)
