@@ -162,4 +162,4 @@ if __name__ == '__main__':
     print("You should run the script with the path to the dataset: python adaboost2d.py path_to_data")
     exit(0)
   blue, red = readData(sys.argv[1])
-  adaBoost2d(blue, red, withPlots=True)
+  adaBoost2d(blue, red, withPlots=len(sys.argv) > 2)
