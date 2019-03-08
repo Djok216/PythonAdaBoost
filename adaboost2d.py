@@ -43,8 +43,8 @@ def plotPointsWithError(blue, red, errW, line, coef=1):
 
 def getAllDecisionStumps(blue, red):
   lines = set()
-  pblue = zip(blue[0], blue[1])
-  pred = zip(red[0], red[1])
+  pblue = list(zip(blue[0], blue[1]))
+  pred = list(zip(red[0], red[1]))
   xblue = set(x[0] for x in pblue)
   xred = set(x[0] for x in pred)
   for xb in xblue:
