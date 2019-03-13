@@ -4,7 +4,7 @@ import math
 from fractions import Fraction
 
 
-EPS = 1e-10
+EPS = 1e-9
 def readData(filePath):
   # blue = minus
   # red = plus
@@ -43,6 +43,13 @@ def plotPointsWithError(blue, red, errW, line, coef=1):
 
 
 def getAllDecisionStumps(blue, red):
+  def check(val, s):
+    if val in s:
+      return True
+    for x in s:
+      if abs(x - val) < EPS:
+        return True
+    return False
   lines = set()
   pblue = list(zip(blue[0], blue[1]))
   pred = list(zip(red[0], red[1]))
@@ -52,7 +59,7 @@ def getAllDecisionStumps(blue, red):
     for xr in xred:
       if xb != xr:
         val = (xb + xr) * 0.5
-        if not val in xblue and not val in xred:
+        if not check(val, xblue) and not check(val, xred):
           lines.add((True, val))
   yblue = set(x[1] for x in pblue)
   yred = set(x[1] for x in pred)
@@ -60,7 +67,7 @@ def getAllDecisionStumps(blue, red):
     for yr in yred:
       if yb != yr:
         val = (yb + yr) * 0.5
-        if not val in yblue and not val in yred:
+        if not check(val, yblue) and not check(val, yred):
           lines.add((False, val))
   lines.add((True, min(min(xblue), min(xred)) - 1))
   lines.add((False, min(min(yblue), min(yred)) - 1))
